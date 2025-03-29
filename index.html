@@ -289,11 +289,18 @@
         box-shadow: 0 8px 20px rgba(32, 178, 170, 0.5), 0 5px 12px rgba(0,0,0,0.2);
         transform: translateY(-2px);
       }
-      #statsButton::before {
-        content: "📊";
-        margin-right: 6px;
-        font-size: 0.7em;
-      }
+     #statsButton::before {
+    content: "📊";
+    margin-right: 5px;
+    font-size: 0.8em;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+#statsButton:hover::before {
+    transform: scale(1.2);  // 懸停時圖示放大
+}
+
 
       /* ----- Result (iframe) ----- */
       #result {
