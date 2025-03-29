@@ -715,43 +715,147 @@
           }
         };
 
-        // 載入 Google Charts
-        google.charts.load("current", { packages:["corechart"] });
-        google.charts.setOnLoadCallback(function() {
-          // statData = { vendors: [...], files: [...] }
+// 繪製 Google Charts
+      function drawCharts(statData) {
+        var modal = document.getElementById("statsModal");
+        var statsContent = document.getElementById("statsContent");
+        // 加入一個返回按鈕
+        statsContent.innerHTML = `
+          <span id="closeModal">&times;</span>
+          <h3>部門次數統計圖</h3>
+          <div id="chartVendor" style="width:100%; height:400px;"></div>
+          <hr style="border:none; height:2px; background:linear-gradient(90deg, transparent, rgba(33, 147, 176, 0.3), transparent); margin:30px 0;"/>
+          <h3>查詢資料次數統計圖</h3>
+          <div id="chartFile" style="width:100%; height:400px;"></div>
+          <div style="text-align:center; margin-top:30px;">
+            <button id="backButton" style="
+                           padding: 12px 25px; 
+              background: linear-gradient(45deg, #2193b0, #6dd5ed); 
+              border: none; 
+              border-radius: 50px; 
+              color: white; 
+              font-size: 3em; 
+              cursor: pointer;
+              box-shadow: 0 8px 15px rgba(33, 147, 176, 0.3),
+                          0 4px 6px rgba(0,0,0,0.1);
+              -webkit-transition: all 0.3s ease;
+              transition: all 0.3s ease;
+              font-weight: bold;
+              min-height: 60px;
+            ">
+              返回
+            </button>
+          </div>
+        `;
+        modal.style.display = "flex";
 
-          // --- 部門 ---
-          const vendorData = new google.visualization.DataTable();
+        var closeBtn = document.getElementById("closeModal");
+        closeBtn.onclick = function() {
+          modal.style.display = "none";
+          statsContent.innerHTML = "";
+        };
+        window.onclick = function(event) {
+          if (event.target === modal) {
+            modal.style.display = "none";
+            statsContent.innerHTML = "";
+          }
+        };  
+
+        // 載入 Google Charts
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(function() {
+          // --- 廠商次數統計 ---
+          var vendorData = new google.visualization.DataTable();
           vendorData.addColumn('string', '部門');
           vendorData.addColumn('number', '次數');
-          vendorData.addRows(statData.vendors || []);
+          vendorData.addRows(statData.vendors);
 
-          const vendorOptions = {
+          var vendorOptions = {
             title: '部門次數統計圖',
+            titleTextStyle: {
+              color: '#0b5269',
+              fontSize: 16,
+              bold: true
+            },
             legend: { position: 'none' },
-            animation: { startup: true, duration: 800, easing: 'out' },
-            chartArea: { width: '80%', height: '50%' },
+            colors: ['#2193b0', '#6dd5ed', '#3cb371', '#20b2aa'],
+            animation: {
+              startup: true,
+              duration: 800,  // 縮短動畫時間
+              easing: 'out'
+            },
+            chartArea: {
+              width: '80%',
+              height: '70%'
+            },
             backgroundColor: 'transparent',
-            bar: { groupWidth: '65%' }
+            hAxis: {
+              textStyle: { 
+                color: '#0b5269',
+                fontSize: 14
+              }
+            },
+            vAxis: {
+              textStyle: { 
+                color: '#0b5269',
+                fontSize: 14
+              },
+              gridlines: {
+                color: '#e4f1f9'
+              }
+            },
+            bar: { groupWidth: '65%' },
+            axisTitlesPosition: 'none'
           };
-          const vendorChart = new google.visualization.ColumnChart(document.getElementById('chartVendor'));
+
+          var vendorChart = new google.visualization.ColumnChart(document.getElementById('chartVendor'));
           vendorChart.draw(vendorData, vendorOptions);
 
-          // --- 檔案 ---
-          const fileData = new google.visualization.DataTable();
+          // --- 檔案次數統計 ---
+          var fileData = new google.visualization.DataTable();
           fileData.addColumn('string', '檔案名稱');
           fileData.addColumn('number', '次數');
-          fileData.addRows(statData.files || []);
+          fileData.addRows(statData.files);
 
-          const fileOptions = {
+          var fileOptions = {
             title: '檔案次數統計圖',
+            titleTextStyle: {
+              color: '#0b5269',
+              fontSize: 16,
+              bold: true
+            },
             legend: { position: 'none' },
-            animation: { startup: true, duration: 800, easing: 'out' },
-            chartArea: { width: '80%', height: '70%' },
+            colors: ['#3cb371', '#20b2aa', '#2193b0', '#6dd5ed'],
+            animation: {
+              startup: true,
+              duration: 800,
+              easing: 'out'
+            },
+            chartArea: {
+              width: '80%',
+              height: '70%'
+            },
             backgroundColor: 'transparent',
-            bar: { groupWidth: '65%' }
+            hAxis: {
+              textStyle: { 
+                color: '#0b5269',
+                fontSize: 14
+              }
+            },
+            vAxis: {
+              textStyle: { 
+                color: '#0b5269',
+                fontSize: 14
+              },
+              gridlines: {
+                color: '#e4f1f9'
+              }
+            },
+            bar: { groupWidth: '65%' },
+            axisTitlesPosition: 'none'
           };
-          const fileChart = new google.visualization.ColumnChart(document.getElementById('chartFile'));
+
+          var fileChart = new google.visualization.ColumnChart(document.getElementById('chartFile'));
           fileChart.draw(fileData, fileOptions);
         });
 
