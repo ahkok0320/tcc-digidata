@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 將此改為您在 Apps Script 部署後得到的 Web App URL
   // 例如： "https://script.google.com/macros/s/XXXXXXXXX/exec"
-  const GAS_WEBAPP_URL = "https://script.google.com/macros/s/XXXXXXXXX/exec";
+  const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwXix03mRsrCSnpmqCW8NQTOYhGFZNc1Sk3Of9qpSbR19j0rSXWJ92K175Q_l5VfBaKgQ/exec";
 
   btn.addEventListener("click", () => {
     // 例如要帶上參數 name
